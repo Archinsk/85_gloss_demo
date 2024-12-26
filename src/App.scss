@@ -1,0 +1,394 @@
+[data-theme="white"] {
+  body {
+    background-color: hsl(0, 0%, 90%);
+  }
+}
+[data-theme="grey"] {
+  body {
+    background-color: grey;
+  }
+}
+
+[data-theme="green"] {
+  body {
+    background-color: green;
+  }
+}
+
+[data-theme="blue"] {
+  body {
+    background-color: blue;
+  }
+}
+
+[data-theme="violet"] {
+  body {
+    background-color: violet;
+  }
+}
+
+.app {
+  font-family: inter;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  overflow: hidden;
+
+  .dropdown {
+    a::after {
+      content: none;
+    }
+  }
+}
+
+.material-icons {
+  font-family: material-icons;
+}
+
+h5 {
+  margin-bottom: 0;
+}
+
+h6 {
+  font-weight: bold;
+}
+
+.tile {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.sidebar {
+  //background-color: yellow;
+  width: calc(100% / 6);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  .sidebar-body {
+    flex: 1 0 auto;
+    overflow-y: auto;
+  }
+}
+
+.preview {
+  flex: 1 0 auto;
+  max-width: calc(100% / 2);
+  display: flex;
+  flex-direction: column;
+  font-family: proxima-nova;
+
+  .alert {
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .preview-controls {
+    width: 100%;
+  }
+
+  .preview-table-title {
+    background-color: rgb(255, 248, 246);
+    color: rgb(26, 28, 29);
+    padding: 1.25rem 2rem;
+    border-bottom: 0.0625rem solid rgb(255, 219, 208);
+    border-radius: 0.5rem 0.5rem 0 0;
+    cursor: pointer;
+
+    &:hover,
+    &.active {
+      padding: 1.125rem 1.875rem 1.1875rem;
+    }
+
+    &:hover {
+      border: 0.125rem solid rgba(255, 0, 0, 0.25);
+    }
+
+    &.active {
+      border: 0.125rem solid rgba(255, 0, 0, 1);
+    }
+
+    h5 {
+      font-size: 1.75rem;
+      line-height: 2rem;
+    }
+
+    span {
+      color: rgb(39, 99, 137);
+    }
+  }
+
+  .preview-table {
+    background-color: rgb(39, 99, 137);
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    h4 {
+      color: white;
+    }
+
+    .table {
+      font-size: 0.875rem;
+      color: rgb(26, 28, 29);
+      margin-bottom: 0;
+      background-color: white;
+      display: flex;
+    }
+
+    .table-column {
+      position: relative;
+      &:hover,
+      &.selected,
+      &.active {
+        & > div:first-child {
+          padding-top: 0.375rem;
+          padding-left: 0.625rem;
+          padding-right: 2.875rem;
+
+          .material-icons {
+            top: -0.125rem;
+          }
+        }
+
+        & > div:last-child {
+          padding-bottom: 0.625rem;
+        }
+
+        .table-data {
+          padding-left: 0.875rem;
+          padding-right: 0.875rem;
+        }
+      }
+
+      &:hover {
+        border: 0.125rem solid rgba(255, 0, 0, 0.25);
+      }
+
+      &.selected {
+        border: 0.125rem solid rgba(255, 0, 0, 0.25);
+      }
+
+      &.active {
+        border: 0.125rem solid rgba(255, 0, 0, 1);
+      }
+
+      &.hidden {
+        .table-head,
+        .table-data {
+          background-color: rgb(228, 228, 228);
+        }
+      }
+    }
+
+    .table-head {
+      border-bottom: 0.125rem solid rgb(202, 230, 255);
+      font-weight: bold;
+      padding: 0.5rem 3rem 0.5rem 0.75rem;
+      background-color: white;
+      position: relative;
+      white-space: nowrap;
+
+      .material-icons {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.125rem 0.375rem;
+        cursor: pointer;
+
+        &.vis {
+          background-color: hsla(225, 100%, 50%, 0.5);
+          color: white;
+        }
+
+        &.invis {
+          background-color: hsla(0, 0%, 50%, 0.5);
+          color: dimgrey;
+        }
+      }
+    }
+
+    .table-data {
+      padding: 0.75rem 1rem;
+      background-color: white;
+      white-space: nowrap;
+
+      .material-icons {
+        line-height: 0.875rem;
+      }
+    }
+  }
+
+  .preview-table-footer {
+    background-color: rgb(255, 248, 246);
+    color: rgb(26, 28, 29);
+    padding: 1.25rem 2rem;
+    border-top: 0.0625rem solid rgb(255, 219, 208);
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+
+  .preview-details {
+    background-color: rgb(255, 248, 246);
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+
+    table {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      margin-bottom: 0;
+
+      padding: 1rem 1.5rem;
+
+      tbody {
+        display: block;
+        padding: 1rem 1.5rem;
+        border: 0.0625rem solid rgb(255, 219, 208);
+        border-radius: 0.5rem;
+        background-color: white;
+      }
+
+      tr {
+        &:first-child {
+          border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        &:last-child {
+        }
+
+        & > td:last-child {
+          font-size: 1rem;
+          font-weight: bold;
+        }
+      }
+
+      td {
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+        width: 20rem;
+        color: #43474b;
+
+        &:first-child {
+          padding-left: 3rem;
+          position: relative;
+
+          .material-icons {
+            position: absolute;
+            top: 0.25rem;
+            left: 0.25rem;
+            padding: 0.125rem 0.375rem;
+
+            &.vis {
+              background-color: hsla(225, 100%, 50%, 0.5);
+              color: white;
+            }
+
+            &.invis {
+              background-color: hsla(0, 0%, 50%, 0.5);
+              color: dimgrey;
+            }
+          }
+        }
+
+        &:last-child {
+          padding-right: 3rem;
+        }
+      }
+    }
+
+    .preview-details-basic {
+      width: 40rem;
+
+      tr {
+        &:hover,
+        &.selected,
+        &.active {
+          & > td:first-child {
+            padding: 0.25rem 0.5rem 0.25rem 2.875rem;
+          }
+
+          & > td:last-child {
+            padding: 0.25rem 2.875rem 0.25rem 0.5rem;
+          }
+        }
+
+        &:hover {
+          border: 0.125rem solid rgba(255, 0, 0, 0.25);
+        }
+
+        &.selected {
+          border: 0.125rem solid rgba(255, 0, 0, 0.25);
+        }
+
+        &.active {
+          border: 0.125rem solid rgba(255, 0, 0, 1);
+        }
+      }
+
+      tr.hidden {
+        td {
+          background-color: rgb(228, 228, 228);
+        }
+      }
+
+      .table-responsive {
+        max-height: 15rem;
+      }
+    }
+
+    .nav {
+      &.active {
+        outline: 0.125rem solid rgba(255, 0, 0, 1);
+        outline-offset: 0.125rem;
+      }
+
+      .nav-link {
+        background-color: unset;
+        color: #43474b;
+        column-gap: 0.8rem;
+        font-size: 1.125rem;
+        line-height: 1.25rem;
+        font-weight: bold;
+        padding: 0.5rem;
+
+        &.active {
+          color: #276389;
+          padding-bottom: 0.375rem;
+          border-radius: 0;
+          border-bottom: 0.125rem solid #276389;
+        }
+      }
+    }
+
+    .tab-pane {
+      tr.selected {
+        border: 0.125rem solid rgba(255, 0, 0, 0.25);
+      }
+      tr.active {
+        border: 0.125rem solid rgba(255, 0, 0, 1);
+      }
+    }
+  }
+}
+
+.settings {
+  //background-color: red;
+  width: calc(100% / 3);
+  padding: 1rem;
+
+  & > div:first-child {
+    height: calc(100% - 3.375rem);
+    overflow-y: auto;
+  }
+
+  form {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .accordion-body {
+    .material-icons {
+      cursor: pointer;
+    }
+  }
+}
