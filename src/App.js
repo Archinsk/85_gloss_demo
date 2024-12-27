@@ -1598,7 +1598,7 @@ function App() {
   const [searchRegistryText, setSearchRegistryText] = useState("");
   const [showAllRegistries, setShowAllRegistries] = useState(false);
 
-  const [registriesListCurrentPage, setRegistriesListCurrentPage] = useState(0);
+  const [registriesListCurrentPage, setRegistriesListCurrentPage] = useState(1);
 
   const registriesListItemsPerPage = 10;
 
@@ -2262,6 +2262,37 @@ function App() {
     }
   }, [updatedRegistries, searchRegistryText]);
 
+  const pagedFiltredUpdatedRegistries = useMemo(() => {
+    if (!showAllRegistries) {
+      return filtredUpdatedRegistries.filter((item, index) => {
+        return (
+          index >=
+            (registriesListCurrentPage - 1) * registriesListItemsPerPage &&
+          index <= registriesListCurrentPage * registriesListItemsPerPage - 1
+        );
+      });
+    } else {
+      return filtredUpdatedRegistries;
+    }
+  }, [filtredUpdatedRegistries, registriesListCurrentPage, showAllRegistries]);
+
+  const totalRegistriesListPages = useMemo(() => {
+    return Math.ceil(updatedRegistries.length / 10);
+  }, [filtredUpdatedRegistries]);
+
+  const changeRegistryPageNumber = (increaseValue) => {
+    const newRegistriesListCurrentPage =
+      registriesListCurrentPage + increaseValue;
+    if (
+      !(
+        newRegistriesListCurrentPage < 1 ||
+        newRegistriesListCurrentPage > totalRegistriesListPages
+      )
+    ) {
+      setRegistriesListCurrentPage(newRegistriesListCurrentPage);
+    }
+  };
+
   return (
     <div className="app">
       <div className="sidebar">
@@ -2281,9 +2312,11 @@ function App() {
         <SidebarBody
           isSearchRegistry={isSearchRegistry}
           searchRegistryText={searchRegistryText}
-          updatedRegistries={filtredUpdatedRegistries}
+          updatedRegistries={pagedFiltredUpdatedRegistries}
           selectedRegistryId={selectedRegistryId}
           showAllRegistries={showAllRegistries}
+          registriesListCurrentPage={registriesListCurrentPage}
+          totalRegistriesListPages={totalRegistriesListPages}
           onClickSidebarItem={(registryId) => {
             setSelectedRegistryId(registryId);
             if (selectedPreviewPart) {
@@ -2307,6 +2340,7 @@ function App() {
           onChangeRegistriesMode={() => {
             setShowAllRegistries(!showAllRegistries);
           }}
+          onChangeRegistryPageNumber={changeRegistryPageNumber}
         />
         <div className="tile mt-3">
           <SaveControls onClickReset={resetChanges} onClickSave={saveChanges} />

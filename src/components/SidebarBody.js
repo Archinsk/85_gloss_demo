@@ -6,15 +6,18 @@ function SidebarBody({
   isSearchRegistry,
   searchRegistryText,
   showAllRegistries,
+  registriesListCurrentPage,
+  totalRegistriesListPages,
   onClickSidebarItem,
   onClickRegistryCreate,
   onChangeSearchRegistryMode,
   onChangeSearchRegistryText,
   onChangeRegistriesMode,
+  onChangeRegistryPageNumber,
 }) {
   return (
     <div className="sidebar-body tile d-flex flex-column justify-content-between">
-      <div>
+      <div className="registries">
         <h4>Список реестров</h4>
         <div className="d-flex justify-content-between gap-3 align-items-start">
           {isSearchRegistry && (
@@ -57,6 +60,7 @@ function SidebarBody({
             Добавить реестр
           </button>
         </div>
+
         <div className="list-group">
           {updatedRegistries.map((registry) => {
             return (
@@ -78,22 +82,36 @@ function SidebarBody({
           })}
         </div>
       </div>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mt-3">
         <button
           className="btn btn-outline-secondary"
           onClick={onChangeRegistriesMode}
         >
           {showAllRegistries ? "Показать постранично" : "Показать всё"}
         </button>
-        <div className="d-flex align-items-center">
-          <button className="btn btn-outline-secondary">
-            <span className="material-icons">chevron_left</span>
-          </button>
-          <div className="mx-2">1 / 3</div>
-          <button className="btn btn-outline-secondary">
-            <span className="material-icons">chevron_right</span>
-          </button>
-        </div>
+        {!showAllRegistries && (
+          <div className="d-flex align-items-center">
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => {
+                onChangeRegistryPageNumber(-1);
+              }}
+            >
+              <span className="material-icons">chevron_left</span>
+            </button>
+            <div className="mx-2">
+              {registriesListCurrentPage} / {totalRegistriesListPages}
+            </div>
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => {
+                onChangeRegistryPageNumber(1);
+              }}
+            >
+              <span className="material-icons">chevron_right</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

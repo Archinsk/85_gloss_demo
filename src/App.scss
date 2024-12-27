@@ -68,6 +68,19 @@ h6 {
 
   .sidebar-body {
     flex: 1 0 auto;
+  }
+
+  .registries {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .list-group {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 0;
     overflow-y: auto;
   }
 }
