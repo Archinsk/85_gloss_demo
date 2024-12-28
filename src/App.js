@@ -2458,6 +2458,25 @@ function App() {
           Выберите элемент для редактирования
         </div>
       )}
+      <div className="backdrop d-none">
+        <div className="modal position-static d-block">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div className="modal-body">
+                Вы не сохранили изменения. При переходе к редактированию другого
+                элемента текущие изменения будут сброшены
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-success">Сохранить</button>
+                <button className="btn btn-danger">Перейти, не сохраняя</button>
+                <button className="btn btn-secondary">
+                  Вернуться к редактированию
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
