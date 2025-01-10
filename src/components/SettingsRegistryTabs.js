@@ -15,8 +15,10 @@ function SettingsRegistryTabs({
     (item) => item.id === selectedRegistryId
   );
   return (
-    <div className="settings-table">
-      <h4>Настройки вкладок подробной информации записи реестра</h4>
+    <div className="settings-table tile">
+      <h4 className="mb-3">
+        Настройки вкладок подробной информации записи реестра
+      </h4>
       <button className="btn btn-primary mb-3" onClick={onClickTabCreate}>
         Добавить вкладку
       </button>

@@ -10,6 +10,7 @@ import SettingsRegistryColumn from "./components/SettingsRegistryColumn";
 import SettingsRegistryTabs from "./components/SettingsRegistryTabs";
 import PreviewControls from "./components/PreviewControls";
 import AppSettings from "./components/AppSettings";
+import ModalWarning from "./components/ModalWarning";
 
 function App() {
   const defaultRegistries = [
@@ -1599,8 +1600,9 @@ function App() {
   const [showAllRegistries, setShowAllRegistries] = useState(false);
 
   const [registriesListCurrentPage, setRegistriesListCurrentPage] = useState(1);
-
   const registriesListItemsPerPage = 10;
+
+  const [isModalWarning, setIsModalWarning] = useState(false);
 
   const handleClickPreviewTableTitle = function () {
     setSelectedPreviewMode("table");
@@ -1662,17 +1664,23 @@ function App() {
   };
 
   const createNewRegistry = () => {
-    const newRegistry = JSON.parse(JSON.stringify(defaultNewRegistry));
-    console.log("newRegistry");
-    console.log(newRegistry);
-    newRegistry.id = newRegistry.id + counter;
-    newRegistry.title = newRegistry.title + counter;
-    setUpdatedRegistries([newRegistry, ...updatedRegistries]);
-    const newRegistryData = JSON.parse(JSON.stringify(defaultNewRegistryData));
-    newRegistryData.registry = newRegistryData.registry + counter;
-    setUpdatedRegistriesData([newRegistryData, ...updatedRegistriesData]);
-    setSelectedRegistryId("newRegistry" + counter);
-    setCounter(counter + 1);
+    if (!isEditingSettings) {
+      const newRegistry = JSON.parse(JSON.stringify(defaultNewRegistry));
+      console.log("newRegistry");
+      console.log(newRegistry);
+      newRegistry.id = newRegistry.id + counter;
+      newRegistry.title = newRegistry.title + counter;
+      setUpdatedRegistries([newRegistry, ...updatedRegistries]);
+      const newRegistryData = JSON.parse(
+        JSON.stringify(defaultNewRegistryData)
+      );
+      newRegistryData.registry = newRegistryData.registry + counter;
+      setUpdatedRegistriesData([newRegistryData, ...updatedRegistriesData]);
+      setSelectedRegistryId("newRegistry" + counter);
+      setCounter(counter + 1);
+    } else {
+      setIsModalWarning(true);
+    }
   };
 
   const deleteRegistry = () => {
@@ -2280,6 +2288,10 @@ function App() {
     return Math.ceil(updatedRegistries.length / 10);
   }, [filtredUpdatedRegistries]);
 
+  const isEditingSettings = useMemo(() => {
+    return JSON.stringify(registries) !== JSON.stringify(updatedRegistries);
+  }, [registries, updatedRegistries]);
+
   const changeRegistryPageNumber = (increaseValue) => {
     const newRegistriesListCurrentPage =
       registriesListCurrentPage + increaseValue;
@@ -2290,6 +2302,25 @@ function App() {
       )
     ) {
       setRegistriesListCurrentPage(newRegistriesListCurrentPage);
+    }
+  };
+
+  const handleSaveModalWarning = (nextTarget) => {
+    setIsModalWarning(false);
+    saveChanges();
+    if (nextTarget) {
+      if (nextTarget.selectedRegistryId) {
+        console.log("Нужно выбрать другой реестр");
+      }
+      if (nextTarget.createRegistry) {
+        console.log("Нужно создать новый реестр");
+      }
+      if (nextTarget.cloneRegistry) {
+        console.log("Нужно клонировать реестр и выбрать его");
+      }
+      if (nextTarget.deleteRegistryId) {
+        console.log("Нужно удалить реестр");
+      }
     }
   };
 
@@ -2319,10 +2350,10 @@ function App() {
           totalRegistriesListPages={totalRegistriesListPages}
           onClickSidebarItem={(registryId) => {
             setSelectedRegistryId(registryId);
-            if (selectedPreviewPart) {
+            if (selectedPreviewPart && !isEditingSettings) {
               setSelectedPreviewPart(null);
             }
-            if (selectedRegistryPropertyId) {
+            if (selectedRegistryPropertyId && !isEditingSettings) {
               setSelectedRegistryPropertyId(null);
             }
           }}
@@ -2342,10 +2373,8 @@ function App() {
           }}
           onChangeRegistryPageNumber={changeRegistryPageNumber}
         />
-        <div className="tile mt-3">
-          <SaveControls onClickReset={resetChanges} onClickSave={saveChanges} />
-        </div>
       </div>
+
       <div className="preview">
         {selectedRegistryId && (
           <PreviewControls
@@ -2409,9 +2438,7 @@ function App() {
 
       <div
         className={
-          selectedRegistryId && selectedPreviewPart
-            ? "settings tile m-3"
-            : "d-none"
+          selectedRegistryId && selectedPreviewPart ? "settings" : "d-none"
         }
       >
         {selectedRegistryId && (
@@ -2421,6 +2448,7 @@ function App() {
                 updatedRegistries={updatedRegistries}
                 updatedRegistriesData={updatedRegistriesData}
                 selectedRegistryId={selectedRegistryId}
+                isEditingSettings={isEditingSettings}
                 onClickRegistryDelete={deleteRegistry}
                 onClickRegistryClone={cloneRegistry}
                 onClickRegistryUpdate={updateRegistry}
@@ -2450,6 +2478,15 @@ function App() {
                 onClickTabUpdate={updateTab}
               />
             )}
+            <div className="tile mt-3">
+              Реестр редактируется - {String(isEditingSettings)}
+              Модальное предупреждение - {String(isModalWarning)}
+              <SaveControls
+                isEditingSettings={isEditingSettings}
+                onClickReset={resetChanges}
+                onClickSave={saveChanges}
+              />
+            </div>
           </>
         )}
       </div>
@@ -2458,25 +2495,24 @@ function App() {
           Выберите элемент для редактирования
         </div>
       )}
-      <div className="backdrop d-none">
-        <div className="modal position-static d-block">
-          <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-              <div className="modal-body">
-                Вы не сохранили изменения. При переходе к редактированию другого
-                элемента текущие изменения будут сброшены
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-success">Сохранить</button>
-                <button className="btn btn-danger">Перейти, не сохраняя</button>
-                <button className="btn btn-secondary">
-                  Вернуться к редактированию
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <ModalWarning
+        show={isModalWarning}
+        isEditingSettings={isEditingSettings}
+        selectedRegistryId={selectedRegistryId}
+        selectedPreviewPart={selectedPreviewPart}
+        selectedRegistryPropertyId={selectedRegistryPropertyId}
+        onDetectTransitionWithoutSaving={() => {
+          setIsModalWarning(true);
+        }}
+        onCancelModalWarning={(target) => {
+          if (target && target.previousSelectedRegistryId) {
+            setSelectedRegistryId(target.previousSelectedRegistryId);
+          }
+          setIsModalWarning(false);
+        }}
+        onSaveModalWarning={handleSaveModalWarning}
+      />
     </div>
   );
 }

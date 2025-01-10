@@ -1,10 +1,18 @@
-function SaveControls({ onClickReset, onClickSave }) {
+function SaveControls({ isEditingSettings, onClickReset, onClickSave }) {
   return (
-    <div className="save-controls d-flex gap-2">
-      <button className="btn btn-outline-secondary" onClick={onClickReset}>
+    <div className="save-controls d-flex gap-2 justify-content-end">
+      <button
+        className="btn btn-outline-secondary"
+        disabled={!isEditingSettings}
+        onClick={onClickReset}
+      >
         Сбросить изменения
       </button>
-      <button className="btn btn-primary" onClick={onClickSave}>
+      <button
+        className="btn btn-primary"
+        disabled={!isEditingSettings}
+        onClick={onClickSave}
+      >
         Сохранить
       </button>
     </div>

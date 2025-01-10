@@ -30,7 +30,7 @@ function SettingsRegistryColumn({
   if (!property) return;
 
   return (
-    <div className="settings-column">
+    <div className="settings-column tile">
       <div className="d-flex justify-content-between">
         <h4>Настройки колонки реестра</h4>
         <div className="dropdown">

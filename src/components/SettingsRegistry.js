@@ -6,21 +6,29 @@ function SettingsRegistry({
   updatedRegistries,
   updatedRegistriesData,
   selectedRegistryId,
+  isEditingSettings,
   onClickRegistryDelete,
   onClickRegistryClone,
   onClickRegistryUpdate,
 }) {
+  const [previousSelectedRegistryId, setPreviousSelectedRegistryId] =
+    useState(null);
+  if (selectedRegistryId !== previousSelectedRegistryId && !isEditingSettings) {
+    setPreviousSelectedRegistryId(selectedRegistryId);
+  }
   const registry = updatedRegistries.find(
-    (item) => item.id === selectedRegistryId
+    (item) => item.id === previousSelectedRegistryId
   );
   const registryData = updatedRegistriesData.find(
-    (item) => item.registry === selectedRegistryId
+    (item) => item.registry === previousSelectedRegistryId
   );
   const [showCollapse, setShowCollapse] = useState(false);
+
   if (!registry) return;
+
   return (
-    <div className="settings-table">
-      <div className="d-flex justify-content-between">
+    <div className="settings-table tile">
+      <div className="d-flex justify-content-between mb-3">
         <h4>Общие настройки реестра</h4>
         <div className="dropdown">
           <a

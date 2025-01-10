@@ -385,9 +385,10 @@ h6 {
 }
 
 .settings {
-  //background-color: red;
   width: calc(100% / 3);
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 
   & > div:first-child {
     height: calc(100% - 3.375rem);
