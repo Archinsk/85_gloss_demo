@@ -2308,6 +2308,7 @@ function App() {
   const handleSaveModalWarning = (nextTarget) => {
     setIsModalWarning(false);
     saveChanges();
+    setSelectedPreviewPart(null);
     if (nextTarget) {
       if (nextTarget.selectedRegistryId) {
         console.log("Нужно выбрать другой реестр");
@@ -2479,8 +2480,8 @@ function App() {
               />
             )}
             <div className="tile mt-3">
-              Реестр редактируется - {String(isEditingSettings)}
-              Модальное предупреждение - {String(isModalWarning)}
+              {/* Реестр редактируется - {String(isEditingSettings)}
+              Модальное предупреждение - {String(isModalWarning)} */}
               <SaveControls
                 isEditingSettings={isEditingSettings}
                 onClickReset={resetChanges}
